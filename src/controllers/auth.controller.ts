@@ -4,6 +4,7 @@ import { generateAccessToken } from "../utils/generateToken";
 import { cache } from "../utils/cache";
 import dayjs from "dayjs";
 import { User } from "../models/User";
+import { Types } from "mongoose";
 
 //tengo mi variable y luego 2 puntos (:) se le agrega un TIPO de dato 
 //Mi variable y luego un igual (=), se le agrega un VALOR
@@ -110,4 +111,59 @@ export const createUser= async (req:Request, res:Response) => {
         console.log("Error ocurrido en createUser", error);
         return res.status(426).json({error})
     }
-}
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { username, email, role } = req.body;
+
+        if (!Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "ID inválido" });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            { username, email, role },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        return res.json({ message: "Usuario actualizado con éxito", user: updatedUser });
+    } catch (error) {
+        console.error("Error en updateUser:", error);
+        return res.status(500).json({ message: "Error al actualizar usuario", error });
+    }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        if (!Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "ID inválido" });
+        }
+
+        const deletedUser = await User.findByIdAndUpdate(
+            id,
+            {
+                status: false,
+                deleteDate: new Date()
+            },
+            { new: true }
+        );
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        return res.json({ message: "Usuario desactivado correctamente", user: deletedUser });
+    } catch (error) {
+        console.error("Error en deleteUser:", error);
+        return res.status(500).json({ message: "Error al desactivar usuario", error });
+    }
+};
+
