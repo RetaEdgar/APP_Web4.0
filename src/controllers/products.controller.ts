@@ -1,4 +1,4 @@
-// controllers/product.controller.ts
+
 import { Request, Response } from "express";
 import { Product } from "../models/Product";
 import { Types } from "mongoose";
@@ -73,7 +73,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     }
 };
 
-// Eliminar producto lógicamente
+// Eliminar producto 
 export const deleteProduct = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

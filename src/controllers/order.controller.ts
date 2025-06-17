@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Order } from "../models/Order";
 import { Types } from "mongoose";
 
-// ✅ Crear una nueva orden
+
 export const createOrder = async (req: Request, res: Response) => {
     try {
         const payload = req.body;
@@ -26,7 +26,7 @@ export const createOrder = async (req: Request, res: Response) => {
     }
 };
 
-// ✅ Obtener todas las órdenes activas
+// Obtener 
 export const getOrders = async (_req: Request, res: Response) => {
     try {
         const orders = await Order.find({ status: "activo" }).populate("products.productId");
@@ -36,7 +36,7 @@ export const getOrders = async (_req: Request, res: Response) => {
     }
 };
 
-// ✅ Obtener una orden por ID
+//Obtener 
 export const getOrderById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -57,8 +57,7 @@ export const getOrderById = async (req: Request, res: Response) => {
     }
 };
 
-// ✅ Actualizar una orden
-// Cambiar el estado de una orden a "PAGADO" o "NO PAGADO"
+// Actualizar 
 export const updateOrder = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -89,7 +88,7 @@ export const updateOrder = async (req: Request, res: Response) => {
 };
 
 
-// ✅ Eliminación lógica de orden (cambia status y guarda deleteDate)
+// Eliminación 
 export const deleteOrder = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
